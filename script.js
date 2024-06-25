@@ -20,6 +20,28 @@ document.getElementById('messageForm').addEventListener('submit', function(e) {
         });
 });
 
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '/welcome.html';
+            } else {
+                alert('Login failed');
+            }
+        });
+});
+
 function loadMessages() {
     fetch('/messages')
         .then(response => response.json())
@@ -49,7 +71,6 @@ function readPswFile() {
             console.error('There has been a problem with your fetch operation:', error);
         });
 }
-
 
 window.readPswFile = readPswFile;
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 const app = express();
 const port = 3000;
 
@@ -21,6 +22,21 @@ app.post('/submit', (req, res) => {
 app.get('/messages', (req, res) => {
     const messages = JSON.parse(fs.readFileSync('messages.json'));
     res.json({ messages });
+});
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const user = JSON.parse(fs.readFileSync('psw.json'));
+
+    if (username === user.username && password === user.password) {
+        res.json({ success: true });
+    } else {
+        res.json({ success: false });
+    }
+});
+
+app.get('/welcome.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'welcome.html'));
 });
 
 app.listen(port, () => {
